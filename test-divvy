@@ -1,0 +1,35 @@
+#!/usr/bin/env python3
+
+import os
+import random
+import subprocess
+
+def divvy(k, n, msg):
+    p = subprocess.Popen(('divvy', '-k', str(k), '-n', str(n)),
+                         stdin=subprocess.PIPE,
+                         stdout=subprocess.PIPE)
+    out, err = p.communicate(msg)
+    if p.returncode != 0:
+        return []
+    out = out.decode('ascii')
+    return [x.strip() for x in out.split('\n') if x.strip()]
+
+def undivvy(pieces):
+    stdin = ''.join(['%s\n' % x for x in pieces])
+    stdin = stdin.encode('ascii')
+    p = subprocess.Popen(('undivvy',),
+                         stdin=subprocess.PIPE,
+                         stdout=subprocess.PIPE)
+    out, err = p.communicate(stdin)
+    if p.returncode != 0:
+        return []
+    return out
+
+for i in range(65536):
+    if i and i % 1000 == 0: print(i)
+    K = random.randint(3, 254)
+    N = random.randint(K, 255)
+    msg = os.urandom(random.randint(8, 4096))
+    pieces = divvy(K, N, msg)
+    for i in range(16):
+        assert undivvy(random.sample(pieces, K)) == msg

@@ -1,0 +1,35 @@
+# wildcards
+.deps
+.dirstamp
+.libs
+*.la
+*.lo
+*.o
+# specific files
+/aclocal.m4
+/autom4te.cache
+/compile
+/config.guess
+/config.h
+/config.h.in
+/config.h.in~
+/config.log
+/config.status
+/config.sub
+/configure
+/depcomp
+/divvy
+/install-sh
+/libtool
+/ltmain.sh
+/m4
+/Makefile
+/Makefile.in
+/missing
+/stamp-h1
+/test/gf_div
+/test/gf_inv
+/test/gf_mul
+/test/gf_pow
+/test/gf_sub
+/undivvy

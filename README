@@ -1,0 +1,50 @@
+Divvy
+=====
+
+Divvy implements Shamir's secret sharing scheme.  It provides a library for
+splitting and combining secrets and frontend tools to do the same.
+
+Examples
+--------
+
+Divide a secret into 10 pieces such that any three may be used to reconstruct
+the original secret:
+    $ echo 'abc' | divvy -k 3 -n 10
+    A_qxz6csQ_pj
+    A5mDDtKYsOPg
+    A3Y4TpzlbG0a
+    A_u2C99_CznA
+    A_eS_x7csv2M
+    A5Sg7HLRfUCY
+    A0C6Hkz9XXB4
+    A3ocgVlEYfZb
+    A4PFeo8ZCOEd
+    Az7bfHATWo8D
+
+Any three of these pieces may be combined to obtain the original secret:
+    $ undivvy << EOF
+    > A3Y4TpzlbG0a
+    > A0C6Hkz9XXB4
+    > A5mDDtKYsOPg
+    > EOF
+    abc
+
+The implementation is 8-bit safe, so arbitrary binary files can be passed into
+divvy and taken from undivvy.  The pieces are always URL base64 encoded.
+
+To Install
+----------
+
+    apt-get install libbsd-dev
+    autoreconf -ivf # (only needed if compiling from git, not tarball)
+    ./configure
+    make
+    sudo make install
+
+TODO
+----
+
+Currently there's minimal error checking on decode.  It won't detect if pieces
+from different secrets are combined, or if the same piece is provided multiple
+times.  This is probably a feature more than a bug as it keeps things simple
+and prevents the additional metadata from leaking anything about the keys.
